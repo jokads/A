@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables para temas */
+:root {
+  --bg: #ffffff;
+  --surface: #f7f6fb;
+  --primary: #6e4cff;
+  --accent: #ff5263;
+  --danger: #ff2d55;
+  --text: #1f1530;
+}
+
+[data-theme="dark"] {
+  --bg: #0b0011;
+  --surface: #170018;
+  --primary: #b62bff;
+  --accent: #ff6a00;
+  --danger: #ff2d55;
+  --text: #ffdfe8;
+}
+
+/* Minimal Fallback CSS - inline no head para evitar páginas brancas */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Garantir que nunca fique branco durante carregamento */
+html {
+  background: #ffffff;
+}
+
+html[data-theme="dark"] {
+  background: #0b0011;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Animações suaves */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Utilitários personalizados */
+.text-primary {
+  color: var(--primary);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+.bg-surface {
+  background-color: var(--surface);
+}
+
+.border-primary {
+  border-color: var(--primary);
+}
+
+/* Focus visible para acessibilidade */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Prevenção de flash branco */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Animação de loading */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
