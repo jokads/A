@@ -1,0 +1,62 @@
+# Workflow profissional para deploy de site estático (TS/TSX, Vite/Next.js/etc.) para GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # Dispara em push para a branch principal
+  push:
+    branches: ["main"]
+  # Permite execução manual pelo Actions tab
+  workflow_dispatch:
+
+# Permissões necessárias para o deploy
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita múltiplos deploys concorrentes
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 1️⃣ Faz checkout do repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Configura Node.js (versão recomendada: 20)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      # 3️⃣ Instala dependências
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Executa build do projeto
+      - name: Build project
+        run: npm run build
+        # ⚠️ Certifique-se que o package.json tem "build" correto
+        # Ex: "vite build" ou "next build && next export"
+
+      # 5️⃣ Configura Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 6️⃣ Upload da pasta de build
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out  # Substitua 'out' pelo diretório gerado pelo seu build ('dist' ou '.next')
+
+      # 7️⃣ Deploy para GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
